@@ -1,9 +1,11 @@
 package com.qa_test_lab.web;
 
 import com.qa_test_lab.web.base.AbstractPage;
+import com.qa_test_lab.web.base.WebHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,9 +38,14 @@ public class HomePage extends AbstractPage {
         return driver.findElement(By.name("signin"));
     }
 
-    private WebElement getProductCatalogueMainMenu() {
-        return driver.findElement(By.id("fat-menu"));
+    public CatalogueMenuDetailedPanel hoverCatalogueMenuItem(int index) {
+        List<WebElement> menuItems = WebHelper.findElements(driver, By.cssSelector("li.f-menu-l-i"));
+        if (index >= menuItems.size()) {
+            throw new IllegalArgumentException(String.format("Max menu item index is %s, when requested %s",
+                    menuItems.size(), index));
+        }
+        Actions action = new Actions(driver);
+        action.moveToElement(menuItems.get(index)).build().perform();
+        return new CatalogueMenuDetailedPanel(driver);
     }
-
-
 }

@@ -17,9 +17,9 @@ public abstract class AbstractTest {
 
         WebDriver.Options driverManage = driver.manage();
         driverManage.window().maximize();
-        driverManage.timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-        driverManage.timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-        driverManage.timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driverManage.timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driverManage.timeouts().setScriptTimeout(15, TimeUnit.SECONDS);
+        driverManage.timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
     }
 
     private void setDriver() {

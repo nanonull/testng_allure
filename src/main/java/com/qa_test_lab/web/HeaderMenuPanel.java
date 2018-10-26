@@ -15,6 +15,6 @@ public class HeaderMenuPanel extends AbstractPanel {
     }
 
     private WebElement getItemsInCart() {
-        return getRootElement().findElement(By.className("hub-i-count"));
+        return findRootElement().findElement(By.className("hub-i-count"));
     }
 }

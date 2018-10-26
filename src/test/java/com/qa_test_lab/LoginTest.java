@@ -4,18 +4,7 @@ import com.qa_test_lab.web.HomePage;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-
-public class HomePageTest extends AbstractTest {
-
-
-    @Test
-    public void testGuestUserCanSeeProductCatalogue() {
-        HomePage homePage = new HomePage(driver);
-        homePage.open();
-        Assertions.assertThat(homePage.getProductCatalogueMainMenuRowNames())
-                .as("Product Catalogue Main Menu Rows mismatch")
-                .hasSize(17);
-    }
+public class LoginTest extends AbstractTest {
 
     @Test(enabled = false)
     public void testUserCanSignIn() {

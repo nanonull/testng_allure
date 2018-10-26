@@ -14,13 +14,13 @@ public abstract class AbstractPanel {
         this.baseLocator = baseLocator;
     }
 
-    public WebElement getRootElement() {
+    public WebElement findRootElement() {
         return driver.findElement(baseLocator);
     }
 
     public boolean isDisplayed() {
         try {
-            return getRootElement().isDisplayed();
+            return findRootElement().isDisplayed();
         } catch (NoSuchElementException exception) {
             return false;
         }

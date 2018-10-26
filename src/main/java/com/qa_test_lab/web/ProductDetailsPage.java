@@ -2,6 +2,7 @@ package com.qa_test_lab.web;
 
 import com.qa_test_lab.web.base.AbstractPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -28,11 +29,23 @@ public class ProductDetailsPage extends AbstractPage {
         driver.get(baseUrl + "/" + productLink);
     }
 
+    private WebElement getOrderButton() {
+        return driver.findElement(By.name("topurchases"));
+    }
+    public boolean isOrderButtonDisplayed() {
+        try {
+            return getOrderButton().isDisplayed();
+        } catch (NoSuchElementException exc) {
+            return false;
+        }
+    }
+
     public void clickOrderButton() {
         getOrderButton().click();
     }
 
-    private WebElement getOrderButton() {
-        return driver.findElement(By.name("topurchases"));
+    public boolean isOpened() {
+        // TODO: 26.10.2018 add better condition
+        return isOrderButtonDisplayed();
     }
 }
