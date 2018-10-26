@@ -1,0 +1,7 @@
+<suite name="Product catalogue">
+<test name="classes">
+    <classes>
+        <class name="com.qa_test_lab.ProductCatalogueTest" />
+    </classes>
+</test>
+</suite>
