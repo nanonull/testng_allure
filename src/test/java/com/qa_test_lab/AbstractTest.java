@@ -3,16 +3,18 @@ package com.qa_test_lab;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractTest {
-    protected WebDriver driver;
+    static final String WEB_DRIVER_ATTRIBUTE = "webdriver";
+    WebDriver driver;
 
     @BeforeMethod
-    public void beforeTest() {
+    public void beforeTest(ITestResult result) {
         setDriver();
 
         WebDriver.Options driverManage = driver.manage();
@@ -20,6 +22,8 @@ public abstract class AbstractTest {
         driverManage.timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driverManage.timeouts().setScriptTimeout(15, TimeUnit.SECONDS);
         driverManage.timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+
+        result.setAttribute(WEB_DRIVER_ATTRIBUTE, driver);
     }
 
     private void setDriver() {
@@ -35,8 +39,8 @@ public abstract class AbstractTest {
         }
     }
 
-    @AfterMethod
-    public void afterTest() {
+    @AfterMethod(alwaysRun = true)
+    public void afterTest(ITestResult result) {
         driver.close();
         driver = null;
     }

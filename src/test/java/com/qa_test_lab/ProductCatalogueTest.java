@@ -2,11 +2,12 @@ package com.qa_test_lab;
 
 import com.qa_test_lab.web.*;
 import org.assertj.core.api.Assertions;
+import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-
+@Listeners({TestListener.class})
 public class ProductCatalogueTest extends AbstractTest {
-
 
     @Test
     public void testUserCanSeeProductCatalogue() {
