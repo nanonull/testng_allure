@@ -8,6 +8,9 @@ import java.util.List;
 
 public class WebHelper {
 
+    public static final long IMPLICIT_TIMEOUT_SEC = 5;
+    public static final long PAGE_LOAD_TIMEOUT_SEC = 15;
+
     public static List<WebElement> findElements(WebDriver driver, By by) {
         return WebHelper.findElements(driver.findElement(By.xpath("*")), by);
     }

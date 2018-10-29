@@ -1,5 +1,6 @@
 package com.qa_test_lab;
 
+import com.qa_test_lab.web.base.WebHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -19,9 +20,9 @@ public abstract class AbstractTest {
 
         WebDriver.Options driverManage = driver.manage();
         driverManage.window().maximize();
-        driverManage.timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driverManage.timeouts().implicitlyWait(WebHelper.IMPLICIT_TIMEOUT_SEC, TimeUnit.SECONDS);
         driverManage.timeouts().setScriptTimeout(15, TimeUnit.SECONDS);
-        driverManage.timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
+        driverManage.timeouts().pageLoadTimeout(WebHelper.PAGE_LOAD_TIMEOUT_SEC, TimeUnit.SECONDS);
 
         result.setAttribute(WEB_DRIVER_ATTRIBUTE, driver);
     }
