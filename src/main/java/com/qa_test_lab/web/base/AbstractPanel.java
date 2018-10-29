@@ -5,18 +5,20 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 
 public abstract class AbstractPanel {
     protected final WebDriver driver;
-    protected final By baseLocator;
+    private final By baseLocator;
 
     public AbstractPanel(WebDriver driver, By baseLocator) {
         this.driver = driver;
         this.baseLocator = baseLocator;
-        PageFactory.initElements(driver, this);
+        DefaultElementLocatorFactory locatorFactory = new DefaultElementLocatorFactory(driver.findElement(baseLocator));
+        PageFactory.initElements(locatorFactory, this);
     }
 
-    public WebElement findRootElement() {
+    private WebElement findRootElement() {
         return driver.findElement(baseLocator);
     }
 

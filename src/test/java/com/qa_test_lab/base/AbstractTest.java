@@ -1,4 +1,4 @@
-package com.qa_test_lab;
+package com.qa_test_lab.base;
 
 import com.qa_test_lab.web.base.WebHelper;
 import org.openqa.selenium.WebDriver;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractTest {
     static final String WEB_DRIVER_ATTRIBUTE = "webdriver";
-    WebDriver driver;
+    protected WebDriver driver;
 
     @BeforeMethod
     public void beforeTest(ITestResult result) {

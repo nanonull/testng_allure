@@ -1,7 +1,6 @@
 package com.qa_test_lab.web;
 
 import com.qa_test_lab.web.base.AbstractPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -18,13 +17,15 @@ public class HomePage extends AbstractPage {
     private List<WebElement> productCatalogueMainMenuRows;
     @FindBy(css = "li.f-menu-l-i")
     private List<WebElement> menuItems;
+    @FindBy(name = "signin")
+    private WebElement signInButton;
 
     public HomePage(WebDriver driver) {
         super(driver, BASE_URL);
     }
 
     public void clickSignInButton() {
-        getSignInButton().click();
+        signInButton.click();
     }
 
     public List<String> getProductCatalogueMainMenuRowNames() {
@@ -34,17 +35,13 @@ public class HomePage extends AbstractPage {
                 .collect(Collectors.toList());
     }
 
-    private WebElement getSignInButton() {
-        return driver.findElement(By.name("signin"));
-    }
-
-    public CatalogueMenuDetailedPanel hoverCatalogueMenuItem(int index) {
+    public CatalogueMenuCategoriesPanel hoverCatalogueMenuItem(int index) {
         if (index >= menuItems.size()) {
             throw new IllegalArgumentException(String.format("Max menu item index is %s, when requested %s",
                     menuItems.size(), index));
         }
         Actions action = new Actions(driver);
         action.moveToElement(menuItems.get(index)).build().perform();
-        return new CatalogueMenuDetailedPanel(driver);
+        return new CatalogueMenuCategoriesPanel(driver);
     }
 }

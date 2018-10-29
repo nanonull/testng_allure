@@ -1,11 +1,16 @@
 package com.qa_test_lab.web;
 
-import com.qa_test_lab.web.base.AbstractPage;
+import com.qa_test_lab.web.base.AbstractPanel;
+import com.qa_test_lab.web.base.WebHelper;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.FluentWait;
 
-public class HeaderMenuPanel extends AbstractPage {
+import java.util.concurrent.TimeUnit;
+
+public class HeaderMenuPanel extends AbstractPanel {
 
     @FindBy(id = "cart_popup_header")
     private WebElement cartButton;
@@ -13,7 +18,7 @@ public class HeaderMenuPanel extends AbstractPage {
     private WebElement cartProductsAmount;
 
     public HeaderMenuPanel(WebDriver driver) {
-        super(driver, HomePage.BASE_URL);
+        super(driver, By.className("header-user-buttons"));
     }
 
     public void clickCartButton() {
@@ -24,4 +29,11 @@ public class HeaderMenuPanel extends AbstractPage {
         return Integer.parseInt(cartProductsAmount.getText());
     }
 
+    public void waitCartHasProductsAmount(int productsInCart) {
+        new FluentWait<>(this)
+                .withMessage("Cart Product amount mismatch in menu header")
+                .pollingEvery(500, TimeUnit.MILLISECONDS)
+                .withTimeout(WebHelper.PAGE_LOAD_TIMEOUT_SEC, TimeUnit.SECONDS)
+                .until(panel -> panel.getItemsInCartAmount() == productsInCart);
+    }
 }

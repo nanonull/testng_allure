@@ -1,20 +1,19 @@
 package com.qa_test_lab;
 
+import com.qa_test_lab.base.AbstractTest;
+import com.qa_test_lab.base.TestListener;
 import com.qa_test_lab.web.CartPanel;
 import com.qa_test_lab.web.HeaderMenuPanel;
-import com.qa_test_lab.web.HomePage;
 import com.qa_test_lab.web.ProductDetailsPage;
-import com.qa_test_lab.web.base.WebHelper;
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.util.concurrent.TimeUnit;
-
+@Listeners({TestListener.class})
 public class OrderTest extends AbstractTest {
 
-    @DataProvider(name = "Products_to_buy")
+    @DataProvider
     public static Object[][] products() {
         return new Object[][]{
                 {"sheriff_zx_1070/p995964", 2330},
@@ -47,18 +46,8 @@ public class OrderTest extends AbstractTest {
             detailsPage.openByLink(product);
             detailsPage.clickOrderButton();
             productsInCart++;
-            int finalProductsInCart = productsInCart;
-            new FluentWait<>(headerMenuPanel)
-                    .withMessage("Cart Product amount mismatch in menu header")
-                    .pollingEvery(500, TimeUnit.MILLISECONDS)
-                    .withTimeout(WebHelper.PAGE_LOAD_TIMEOUT_SEC, TimeUnit.SECONDS)
-                    .until(panel -> panel.getItemsInCartAmount() == finalProductsInCart);
+            headerMenuPanel.waitCartHasProductsAmount(productsInCart);
         }
-
-        HomePage homePage = new HomePage(driver);
-        homePage.open();
-
-        headerMenuPanel.clickCartButton();
 
         CartPanel cartPanel = new CartPanel(driver);
         Assertions.assertThat(cartPanel.getProductIds())

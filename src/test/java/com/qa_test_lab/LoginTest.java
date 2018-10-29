@@ -1,7 +1,7 @@
 package com.qa_test_lab;
 
+import com.qa_test_lab.base.AbstractTest;
 import com.qa_test_lab.web.HomePage;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 public class LoginTest extends AbstractTest {

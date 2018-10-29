@@ -1,7 +1,6 @@
-package com.qa_test_lab;
+package com.qa_test_lab.base;
 
 import io.qameta.allure.Allure;
-import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -44,6 +43,7 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext iTestContext) {
+
     }
 
 }
