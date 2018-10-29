@@ -24,6 +24,7 @@ public class CatalogueMenuDetailedPanel extends AbstractPanel {
         }
         categoryTitles.get(index).click();
     }
+
     public void clickCategoryItem(int categoryIndex, int itemIndexWithinCategory) {
         List<WebElement> categoriesPanels = WebHelper.findElements(findRootElement(),
                 By.cssSelector(CATEGORY_PANEL_ROOT_CSS));

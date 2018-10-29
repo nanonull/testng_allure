@@ -1,19 +1,23 @@
 package com.qa_test_lab.web;
 
 import com.qa_test_lab.web.base.AbstractPage;
-import com.qa_test_lab.web.base.WebHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class HomePage extends AbstractPage {
 
-
     public static final String BASE_URL = "https://rozetka.com.ua";
+
+    @FindBy(className = "f-menu-l-i")
+    private List<WebElement> productCatalogueMainMenuRows;
+    @FindBy(css = "li.f-menu-l-i")
+    private List<WebElement> menuItems;
 
     public HomePage(WebDriver driver) {
         super(driver, BASE_URL);
@@ -24,14 +28,10 @@ public class HomePage extends AbstractPage {
     }
 
     public List<String> getProductCatalogueMainMenuRowNames() {
-        return getProductCatalogueMainMenuRows()
+        return productCatalogueMainMenuRows
                 .stream()
                 .map(webElement -> webElement.getText())
                 .collect(Collectors.toList());
-    }
-
-    private List<WebElement> getProductCatalogueMainMenuRows() {
-        return driver.findElements(By.className("f-menu-l-i"));
     }
 
     private WebElement getSignInButton() {
@@ -39,7 +39,6 @@ public class HomePage extends AbstractPage {
     }
 
     public CatalogueMenuDetailedPanel hoverCatalogueMenuItem(int index) {
-        List<WebElement> menuItems = WebHelper.findElements(driver, By.cssSelector("li.f-menu-l-i"));
         if (index >= menuItems.size()) {
             throw new IllegalArgumentException(String.format("Max menu item index is %s, when requested %s",
                     menuItems.size(), index));

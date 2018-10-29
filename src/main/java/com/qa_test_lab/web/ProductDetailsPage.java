@@ -1,23 +1,25 @@
 package com.qa_test_lab.web;
 
 import com.qa_test_lab.web.base.AbstractPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 public class ProductDetailsPage extends AbstractPage {
+
+    @FindBy(id = "price_label")
+    private WebElement priceElement;
+
+    @FindBy(name = "topurchases")
+    private WebElement orderButton;
 
     public ProductDetailsPage(WebDriver driver) {
         super(driver, HomePage.BASE_URL);
     }
 
     public int getProductPrice() {
-        return Integer.parseInt(getPriceElement().getText().replaceAll("[^\\d]", ""));
-    }
-
-    private WebElement getPriceElement() {
-        return driver.findElement(By.id("price_label"));
+        return Integer.parseInt(priceElement.getText().replaceAll("[^\\d]", ""));
     }
 
     @Override
@@ -29,19 +31,16 @@ public class ProductDetailsPage extends AbstractPage {
         driver.get(baseUrl + "/" + productLink);
     }
 
-    private WebElement getOrderButton() {
-        return driver.findElement(By.name("topurchases"));
-    }
     public boolean isOrderButtonDisplayed() {
         try {
-            return getOrderButton().isDisplayed();
+            return orderButton.isDisplayed();
         } catch (NoSuchElementException exc) {
             return false;
         }
     }
 
     public void clickOrderButton() {
-        getOrderButton().click();
+        orderButton.click();
     }
 
     public boolean isOpened() {

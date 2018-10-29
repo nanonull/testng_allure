@@ -17,7 +17,7 @@ mvn clean test site -Dbrowser=firefox
 mvn io.qameta.allure:allure-maven:serve
 
 For example full cmd can look like:
-mvn clean compile test -Dtest=ProductCatalogueTest#test1 -Dbrowser=chrome site io.qameta.allure:allure-maven:serve
+mvn clean compile test -Dtest=ProductCatalogueTest#testUserCanSeeProductCatalogue -Dbrowser=chrome site io.qameta.allure:allure-maven:serve
 
 
 Test assumptions:
