@@ -2,57 +2,71 @@ package com.qa_test_lab;
 
 import com.qa_test_lab.base.AbstractTest;
 import com.qa_test_lab.base.TestListener;
-import com.qa_test_lab.web.CartPanel;
+import com.qa_test_lab.steps.OrderSteps;
+import com.qa_test_lab.web.checkout.CartPanel;
+import com.qa_test_lab.web.checkout.CheckoutPage;
 import com.qa_test_lab.web.HeaderMenuPanel;
 import com.qa_test_lab.web.ProductDetailsPage;
-import org.assertj.core.api.Assertions;
+import com.qa_test_lab.web.checkout.RemoveCartItemPanel;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Listeners({TestListener.class})
 public class OrderTest extends AbstractTest {
 
-    @DataProvider
-    public static Object[][] products() {
-        return new Object[][]{
-                {"sheriff_zx_1070/p995964", 2330},
-                {"asus_x570ud_e4037/p31282079/", 25999}
-        };
-    }
-
-    @Test(dataProvider = "products")
-    public void testUserCanOrderProduct(String productLink, int productPrice) {
-        ProductDetailsPage detailsPage = new ProductDetailsPage(driver);
-        detailsPage.openByLink(productLink);
-        Assertions.assertThat(detailsPage.getProductPrice())
-                .as("Product Price mismatch").isEqualTo(productPrice);
-        detailsPage.clickOrderButton();
-        Assertions.assertThat(new CartPanel(driver).isDisplayed())
-                .as("Cart Popup is not displayed").isTrue();
-
-        Assertions.assertThat(new HeaderMenuPanel(driver).getItemsInCartAmount())
-                .as("Mismatch product amount in cart").isEqualTo(1);
-    }
-
     @Test
-    public void testProductsInCart() {
+    public void checkoutProducts() {
         String[] products = {"/dell_cel3060_4_500_dvd/p18581717/", "/kingston_datatraveler_se9_16gb/p200095/"};
-        ProductDetailsPage detailsPage = new ProductDetailsPage(driver);
-        HeaderMenuPanel headerMenuPanel = new HeaderMenuPanel(driver);
 
-        int productsInCart = 0;
-        for (String product : products) {
-            detailsPage.openByLink(product);
-            detailsPage.clickOrderButton();
-            productsInCart++;
-            headerMenuPanel.waitCartHasProductsAmount(productsInCart);
-        }
+        OrderSteps.addProductsToCart(driver, products);
 
         CartPanel cartPanel = new CartPanel(driver);
-        Assertions.assertThat(cartPanel.getProductIds())
+        assertThat(cartPanel.isDisplayed()).isTrue();
+        assertThat(cartPanel.getProductIds())
                 .as("Cart Product Ids mismatch")
                 .containsOnly(products[0], products[1]);
+        cartPanel.clickCheckoutCart();
+
+        CheckoutPage checkoutPage = new CheckoutPage(driver);
+        assertThat(checkoutPage.isDisplayed())
+                .as("Checkout Page should be displayed").isTrue();
+        assertThat(checkoutPage.isMiniCartDisplayed()).isTrue();
+        assertThat(checkoutPage.getProductIds())
+                .as("checkoutPage Product Ids mismatch")
+                .containsOnly(products[0], products[1]);
+    }
+
+
+    @Test
+    public void updateProductsDuringCheckout() {
+        String[] products = {"/dell_cel3060_4_500_dvd/p18581717/", "/kingston_datatraveler_se9_16gb/p200095/"};
+
+        OrderSteps.checkoutProducts(driver, products);
+
+        CheckoutPage checkoutPage = new CheckoutPage(driver);
+        checkoutPage.clickEditCart();
+
+        CartPanel cartPanel = new CartPanel(driver);
+        assertThat(cartPanel.isDisplayed()).isTrue();
+        assertThat(cartPanel.getProductIds())
+                .as("Cart Product Ids mismatch")
+                .containsOnly(products[0], products[1]);
+
+
+        new CartPanel(driver).removeItem(1);
+        assertThat(cartPanel.getProductIds())
+                .as("Cart Product Ids mismatch")
+                .containsOnly(products[0]);
+
+        cartPanel.clickItemPlus(0);
+
+        cartPanel.clickCheckoutCart();
+        assertThat(cartPanel.isDisplayed()).isFalse();
+        assertThat(checkoutPage.isDisplayed()).isTrue();
+        assertThat(checkoutPage.getProductQty(0)).isEqualTo(2);
     }
 
 }

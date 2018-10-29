@@ -14,6 +14,13 @@ public abstract class AbstractPanel {
     public AbstractPanel(WebDriver driver, By baseLocator) {
         this.driver = driver;
         this.baseLocator = baseLocator;
+        initElements();
+    }
+
+    protected void updateStaleElements() {
+        initElements();
+    }
+    private void initElements() {
         DefaultElementLocatorFactory locatorFactory = new DefaultElementLocatorFactory(driver.findElement(baseLocator));
         PageFactory.initElements(locatorFactory, this);
     }

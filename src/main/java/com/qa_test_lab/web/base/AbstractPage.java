@@ -16,4 +16,8 @@ public abstract class AbstractPage {
     public void open() {
         driver.get(baseUrl);
     }
+
+    public boolean isDisplayed() {
+        return driver.getCurrentUrl().startsWith(baseUrl);
+    }
 }
