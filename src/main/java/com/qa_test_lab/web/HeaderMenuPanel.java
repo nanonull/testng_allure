@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class HeaderMenuPanel extends AbstractPanel {
@@ -32,8 +33,8 @@ public class HeaderMenuPanel extends AbstractPanel {
     public void waitCartHasProductsAmount(int productsInCart) {
         new FluentWait<>(this)
                 .withMessage("Cart Product amount mismatch in menu header")
-                .pollingEvery(500, TimeUnit.MILLISECONDS)
-                .withTimeout(WebHelper.PAGE_LOAD_TIMEOUT_SEC, TimeUnit.SECONDS)
+                .pollingEvery(Duration.ofMillis(500))
+                .withTimeout(Duration.ofSeconds(WebHelper.PAGE_LOAD_TIMEOUT_SEC))
                 .until(panel -> panel.getItemsInCartAmount() == productsInCart);
     }
 }

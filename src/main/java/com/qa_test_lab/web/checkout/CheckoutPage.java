@@ -40,6 +40,6 @@ public class CheckoutPage extends AbstractPage {
 
 
     public int getProductQty(int itemIndex) {
-        return Integer.parseInt(productQuantities.get(itemIndex).getText());
+        return Integer.parseInt(productQuantities.get(itemIndex).getText().replaceAll("[^\\d]*", ""));
     }
 }

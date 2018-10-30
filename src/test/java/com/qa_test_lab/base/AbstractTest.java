@@ -21,7 +21,7 @@ public abstract class AbstractTest {
         WebDriver.Options driverManage = driver.manage();
         driverManage.window().maximize();
         driverManage.timeouts().implicitlyWait(WebHelper.IMPLICIT_TIMEOUT_SEC, TimeUnit.SECONDS);
-        driverManage.timeouts().setScriptTimeout(15, TimeUnit.SECONDS);
+        driverManage.timeouts().setScriptTimeout(WebHelper.SCRIPT_TIMEOUT_SEC, TimeUnit.SECONDS);
         driverManage.timeouts().pageLoadTimeout(WebHelper.PAGE_LOAD_TIMEOUT_SEC, TimeUnit.SECONDS);
 
         result.setAttribute(WEB_DRIVER_ATTRIBUTE, driver);
@@ -42,7 +42,9 @@ public abstract class AbstractTest {
 
     @AfterMethod(alwaysRun = true)
     public void afterTest(ITestResult result) {
-        driver.close();
+        if (Boolean.valueOf(System.getProperty("closeBrowser"))) {
+            driver.close();
+        }
         driver = null;
     }
 }

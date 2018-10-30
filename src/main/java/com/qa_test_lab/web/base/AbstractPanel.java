@@ -17,7 +17,7 @@ public abstract class AbstractPanel {
         initElements();
     }
 
-    protected void updateStaleElements() {
+    public void updateStaleElements() {
         initElements();
     }
     private void initElements() {
@@ -25,7 +25,7 @@ public abstract class AbstractPanel {
         PageFactory.initElements(locatorFactory, this);
     }
 
-    private WebElement findRootElement() {
+    protected WebElement findRootElement() {
         return driver.findElement(baseLocator);
     }
 

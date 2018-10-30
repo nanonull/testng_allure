@@ -3,6 +3,7 @@ package com.qa_test_lab;
 import com.qa_test_lab.base.AbstractTest;
 import com.qa_test_lab.base.TestListener;
 import com.qa_test_lab.steps.OrderSteps;
+import com.qa_test_lab.web.base.WebHelper;
 import com.qa_test_lab.web.checkout.CartPanel;
 import com.qa_test_lab.web.checkout.CheckoutPage;
 import com.qa_test_lab.web.HeaderMenuPanel;
@@ -57,9 +58,14 @@ public class OrderTest extends AbstractTest {
 
 
         new CartPanel(driver).removeItem(1);
-        assertThat(cartPanel.getProductIds())
-                .as("Cart Product Ids mismatch")
-                .containsOnly(products[0]);
+        WebHelper.repeatUntilSuccess(500, 4, ()->{
+            cartPanel.updateStaleElements();
+            assertThat(cartPanel.getProductIds())
+                    .as("Cart Product Ids mismatch")
+                    .containsOnly(products[1]);
+            return true;
+        });
+
 
         cartPanel.clickItemPlus(0);
 
